@@ -1,0 +1,23 @@
+xy_mysql:
+  image: mysql:5.6
+  environment:
+    MYSQL_ROOT_PASSWORD: xy123456
+  ports:
+    - 3307:3306
+xy_phpfpm:
+  image: php:7.0-fpm
+  links:
+    - xy_mysql:mysql
+  volumes: 
+    - /var/nginx/www/html:/var/www/html
+  ports:
+    - 9000:9000  
+xy_nginx:
+  image: nginx:1.10.3
+  links: 
+    - xy_phpfpm:phpfpm
+  volumes:
+    - /var/nginx/www/html:/var/www/html
+  ports:
+    - 80:80    
+
